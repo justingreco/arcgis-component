@@ -1,0 +1,35 @@
+import { s, a as s$1, r as r$1, t as t$1 } from './cast-3d5be210.js';
+import { M as e } from './DefaultUI-a0db5719.js';
+import { W } from './brushes-f4d4256e.js';
+import { s as s$2 } from './Container-9c6fdd22.js';
+import { l as l$1 } from './reactiveUtils-bd6fe823.js';
+import { a as a$1 } from './DisplayObject-f25c6d04.js';
+import { x as x$1 } from './earcut-4e6b97b1.js';
+import { r } from './vec2-4f9a494f.js';
+import { n as n$1 } from './vec2f64-2956001b.js';
+import { H, D } from './featureConversionUtils-3f60eb15.js';
+import { t } from './OptimizedFeature-a0dba562.js';
+import { w as w$1 } from './number-ad66b701.js';
+import { c, f } from './FramebufferObject-bfb23fd2.js';
+import { C, E, F } from './enums-4770f29d.js';
+import { I } from './Utils-b4b0f45e.js';
+
+/*
+All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+See https://js.arcgis.com/4.24/esri/copyright.txt for details.
+*/
+const x=s.getLogger("esri.views.2d.engine.webgl.Mesh2D"),g=t=>{switch(t.BYTES_PER_ELEMENT){case 1:return C.UNSIGNED_BYTE;case 2:return C.UNSIGNED_SHORT;case 4:return C.UNSIGNED_INT;default:throw new s$1("Cannot get DataType of array")}},p$1=(e,t,r,o)=>{let s=0;for(let n=1;n<r;n++){const r=e[2*(t+n-1)],o=e[2*(t+n-1)+1];s+=(e[2*(t+n)]-r)*(e[2*(t+n)+1]+o);}return o?s>0:s<0},l=({coords:e,lengths:t},r)=>{const s=[];for(let n=0,i=0;n<t.length;i+=t[n],n+=1){const c=i,a=[];for(;n<t.length-1&&p$1(e,i+t[n],t[n+1],r);n+=1,i+=t[n])a.push(i+t[n]-c);const f=e.slice(2*c,2*(i+t[n])),h=x$1(f,a,2);for(const e of h)s.push(e+c);}return s};class w{constructor(e,t,r,o=!1){this._cache={},this.vertices=e,this.indices=t,this.primitiveType=r,this.isMapSpace=o;}static fromRect({x:e,y:t,width:r,height:o}){const s=e,n=t,i=s+r,c=n+o;return w.fromScreenExtent({xmin:s,ymin:n,xmax:i,ymax:c})}static fromPath(e){const t$1=H(new t,e.path,!1,!1),r=t$1.coords,o=new Uint32Array(l(t$1,!0)),s=new Uint32Array(r.length/2);for(let n=0;n<s.length;n++)s[n]=w$1(Math.floor(r[2*n]),Math.floor(r[2*n+1]));return new w({geometry:s},o,E.TRIANGLES)}static fromGeometry(t,r){const o=r.geometry.type;switch(o){case"polygon":return w.fromPolygon(t,r.geometry);case"extent":return w.fromMapExtent(t,r.geometry);default:return x.error(new s$1("mapview-bad-type",`Unable to create a mesh from type ${o}`,r)),w.fromRect({x:0,y:0,width:1,height:1})}}static fromPolygon(e,t$1){const r$1=D(new t,t$1,!1,!1),o=r$1.coords,i=new Uint32Array(l(r$1,!1)),h=new Uint32Array(o.length/2),u=n$1(),y=n$1();for(let n=0;n<h.length;n++)r(u,o[2*n],o[2*n+1]),e.toScreen(y,u),h[n]=w$1(Math.floor(y[0]),Math.floor(y[1]));return new w({geometry:h},i,E.TRIANGLES,!0)}static fromScreenExtent({xmin:e,xmax:t,ymin:r,ymax:o}){const s={geometry:new Uint32Array([w$1(e,r),w$1(t,r),w$1(e,o),w$1(e,o),w$1(t,r),w$1(t,o)])},n=new Uint32Array([0,1,2,3,4,5]);return new w(s,n,E.TRIANGLES)}static fromMapExtent(e,t){const[r,o]=e.toScreen([0,0],[t.xmin,t.ymin]),[s,n]=e.toScreen([0,0],[t.xmax,t.ymax]),i={geometry:new Uint32Array([w$1(r,o),w$1(s,o),w$1(r,n),w$1(r,n),w$1(s,o),w$1(s,n)])},c=new Uint32Array([0,1,2,3,4,5]);return new w(i,c,E.TRIANGLES)}destroy(){r$1(this._cache.indexBuffer)&&this._cache.indexBuffer.dispose();for(const e in this._cache.vertexBuffers)r$1(this._cache.vertexBuffers[e])&&this._cache.vertexBuffers[e].dispose();}get elementType(){return g(this.indices)}getIndexBuffer(e,t=F.STATIC_DRAW){return this._cache.indexBuffer||(this._cache.indexBuffer=c.createIndex(e,t,this.indices)),this._cache.indexBuffer}getVertexBuffers(e,t=F.STATIC_DRAW){return this._cache.vertexBuffers||(this._cache.vertexBuffers=Object.keys(this.vertices).reduce(((r,o)=>({...r,[o]:c.createVertex(e,t,this.vertices[o])})),{})),this._cache.vertexBuffers}}
+
+/*
+All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+See https://js.arcgis.com/4.24/esri/copyright.txt for details.
+*/
+const n=s.getLogger("esri.views.2d.engine.webgl.ClippingInfo"),m=t=>parseFloat(t)/100;class p extends a$1{constructor(t,e){super(),this._clip=e,this._cache={},this.stage=t,this._handle=l$1((()=>e.version),(()=>this._invalidate())),this.ready();}static fromClipArea(t,e){return new p(t,e)}_destroyGL(){r$1(this._cache.mesh)&&(this._cache.mesh.destroy(),this._cache.mesh=null),r$1(this._cache.vao)&&(this._cache.vao.dispose(),this._cache.vao=null);}destroy(){this._destroyGL(),this._handle.remove();}getVAO(t,e,r,i){const[o,h]=e.size;if("geometry"!==this._clip.type&&this._lastWidth===o&&this._lastHeight===h||(this._lastWidth=o,this._lastHeight=h,this._destroyGL()),t$1(this._cache.vao)){const s=this._createMesh(e,this._clip),o=s.getIndexBuffer(t),h=s.getVertexBuffers(t);this._cache.mesh=s,this._cache.vao=new f(t,r,i,h,o);}return this._cache.vao}_createTransforms(){return {dvs:e()}}_invalidate(){this._destroyGL(),this.requestRender();}_createScreenRect(t,e){const[r,s]=t.size,i="string"==typeof e.left?m(e.left)*r:e.left,o="string"==typeof e.right?m(e.right)*r:e.right,h="string"==typeof e.top?m(e.top)*s:e.top,a="string"==typeof e.bottom?m(e.bottom)*s:e.bottom,c=i,n=h;return {x:c,y:n,width:Math.max(r-o-c,0),height:Math.max(s-a-n,0)}}_createMesh(e,r){switch(r.type){case"rect":return w.fromRect(this._createScreenRect(e,r));case"path":return w.fromPath(r);case"geometry":return w.fromGeometry(e,r);default:return n.error(new s$1("mapview-bad-type","Unable to create ClippingInfo mesh from clip of type: ${clip.type}")),w.fromRect({x:0,y:0,width:1,height:1})}}}
+
+/*
+All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+See https://js.arcgis.com/4.24/esri/copyright.txt for details.
+*/
+class a extends s$2{constructor(){super(...arguments),this.name=this.constructor.name;}set clips(e){this._clips=e,this.children.forEach((r=>r.clips=e)),this._updateClippingInfo();}_createTransforms(){return {dvs:e()}}doRender(e){const r=this.createRenderParams(e),{painter:s,globalOpacity:t,profiler:i,drawPhase:n}=r,a=n===I.LABEL||n===I.HIGHLIGHT?1:t*this.computedOpacity;i.recordContainerStart(this.name),s.beforeRenderLayer(r,this._clippingInfos?255:0,a),this.updateTransforms(e.state),this.renderChildren(r),s.compositeLayer(r,a),i.recordContainerEnd();}renderChildren(r){t$1(this._renderPasses)&&(this._renderPasses=this.prepareRenderPasses(r.painter));for(const e of this.children)e.beforeRender(r);for(const e of this._renderPasses)try{e.render(r);}catch(s){}for(const e of this.children)e.afterRender(r);}createRenderParams(e){return e.requireFBO=this.requiresDedicatedFBO,e}prepareRenderPasses(e){return [e.registerRenderPass({name:"clip",brushes:[W.clip],target:()=>this._clippingInfos,drawPhase:I.MAP|I.LABEL|I.LABEL_ALPHA|I.DEBUG|I.HIGHLIGHT})]}updateTransforms(e){for(const r of this.children)r.setTransform(e);}onAttach(){super.onAttach(),this._updateClippingInfo();}onDetach(){super.onDetach(),this._updateClippingInfo();}_updateClippingInfo(){if(r$1(this._clippingInfos)&&(this._clippingInfos.forEach((e=>e.destroy())),this._clippingInfos=null),!this.stage)return;const e=this._clips;r$1(e)&&e.length&&(this._clippingInfos=e.items.map((e=>p.fromClipArea(this.stage,e)))),this.requestRender();}}
+
+export { a };

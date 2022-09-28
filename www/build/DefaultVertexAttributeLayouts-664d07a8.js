@@ -1,0 +1,26 @@
+import { f as f$1 } from './vec2f64-2956001b.js';
+import { o as o$1 } from './context-util-5ae1bf7b.js';
+import { G as G$1, M, P, U as U$1, L, D, Y, V, o as o$2, C } from './enums-4770f29d.js';
+import { D as D$1 } from './FramebufferObject-bfb23fd2.js';
+import { u as u$1 } from './Texture-f189b7ba.js';
+import { t as t$2 } from './VertexElementDescriptor-3b53aa99.js';
+
+/*
+All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+See https://js.arcgis.com/4.24/esri/copyright.txt for details.
+*/
+function n(){return new Float32Array(4)}function t$1(n){const t=new Float32Array(4);return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t}function r$1(n,t,r,e){const a=new Float32Array(4);return a[0]=n,a[1]=t,a[2]=r,a[3]=e,a}function e(n,t){return new Float32Array(n,t,4)}function a(){return n()}function o(){return r$1(1,1,1,1)}function u(){return r$1(1,0,0,0)}function s(){return r$1(0,1,0,0)}function c(){return r$1(0,0,1,0)}function i(){return r$1(0,0,0,1)}const f=a(),l=o(),_$1=u(),y=s(),w=c(),N=i(),O$1=Object.freeze(Object.defineProperty({__proto__:null,create:n,clone:t$1,fromValues:r$1,createView:e,zeros:a,ones:o,unitX:u,unitY:s,unitZ:c,unitW:i,ZEROS:f,ONES:l,UNIT_X:_$1,UNIT_Y:y,UNIT_Z:w,UNIT_W:N},Symbol.toStringTag,{value:"Module"}));
+
+/*
+All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+See https://js.arcgis.com/4.24/esri/copyright.txt for details.
+*/
+function _(e,u,f="nearest",m=!1){const c=!(m&&"u8"===u.pixelType),_=c?G$1.FLOAT:G$1.UNSIGNED_BYTE,p=null==u.pixels||0===u.pixels.length?null:c?u.getAsRGBAFloat():u.getAsRGBA(),E=e.capabilities.textureFloat?.textureFloatLinear,T={width:u.width,height:u.height,target:M.TEXTURE_2D,pixelFormat:P.RGBA,internalFormat:e.type===o$1.WEBGL2&&c?U$1.RGBA32F:P.RGBA,samplingMode:!E||"bilinear"!==f&&"cubic"!==f?L.NEAREST:L.LINEAR,dataType:_,wrapMode:D.CLAMP_TO_EDGE,flipped:!1};return new u$1(e,T,p)}function p(e,t,i,m){const _=m?G$1.UNSIGNED_BYTE:G$1.FLOAT,p={width:t,height:i,target:M.TEXTURE_2D,pixelFormat:P.RGBA,internalFormat:P.RGBA,samplingMode:L.NEAREST,dataType:_,wrapMode:D.CLAMP_TO_EDGE,flipped:!1},E=new u$1(e,p);return new D$1(e,{colorTarget:Y.TEXTURE,depthStencilTarget:V.DEPTH_STENCIL_RENDER_BUFFER,width:t,height:i},E)}function E(e,u){const{spacing:f,offsets:m,coefficients:c,size:[_,p]}=u,E=f[0]>1,T={width:E?4*_:_,height:p,target:M.TEXTURE_2D,pixelFormat:P.RGBA,internalFormat:e.type===o$1.WEBGL2?U$1.RGBA32F:P.RGBA,dataType:G$1.FLOAT,samplingMode:L.NEAREST,wrapMode:D.CLAMP_TO_EDGE,flipped:!1},g=new Float32Array(E?_*p*16:2*m.length);if(E)for(let t=0,n=0;t<c.length;t++)g[n++]=c[t],t%3==2&&(g[n++]=1);else for(let t=0;t<p;t++)for(let e=0;e<_;e++){const n=4*(t*_+e),a=2*(e*p+t);g[n]=m[a],g[n+1]=m[a+1],g[n+3]=-1===m[a]?0:1;}return new u$1(e,T,g)}function T(e,t){const i={width:t.length/4,height:1,target:M.TEXTURE_2D,pixelFormat:P.RGBA,internalFormat:P.RGBA,dataType:G$1.UNSIGNED_BYTE,samplingMode:L.NEAREST,wrapMode:D.CLAMP_TO_EDGE,flipped:!1};return new u$1(e,i,t)}function g(t,n,a,r=1,i=!0){return {u_flipY:i,u_applyTransform:!!t,u_opacity:r,u_transformSpacing:t?t.spacing:f$1,u_transformGridSize:t?t.size:f$1,u_targetImageSize:n,u_srcImageSize:a}}function A(e,t){return {u_colormapOffset:t||0,u_colormapMaxIndex:e?e.length/4-1:0}}function h(e,t){return {u_scale:e,u_offset:t}}function d(e){return {u_bandCount:e.bandCount,u_minOutput:e.outMin,u_maxOutput:e.outMax,u_minCutOff:e.minCutOff,u_maxCutOff:e.maxCutOff,u_factor:e.factor,u_useGamma:e.useGamma,u_gamma:e.gamma,u_gammaCorrection:e.gammaCorrection}}function O(e){return {u_hillshadeType:e.hillshadeType,u_sinZcosAs:e.sinZcosAs,u_sinZsinAs:e.sinZsinAs,u_cosZs:e.cosZs,u_weights:e.weights,u_factor:e.factor,u_minValue:e.minValue,u_maxValue:e.maxValue}}function F(e,t){const n=e.gl,a=t.glName,r=n.getProgramParameter(a,n.ACTIVE_UNIFORMS),i=new Map;let o;for(let s=0;s<r;s++)o=n.getActiveUniform(a,s),o&&i.set(o.name,{location:n.getUniformLocation(a,o.name),info:o});return i}function R(e,t,n){Object.keys(n).forEach((a=>{const r=t.get(a)||t.get(a+"[0]");r&&G(e,a,n[a],r);}));}function U(e,t,n,a){n.length===a.length&&(a.some((e=>null==e))||n.some((e=>null==e))||n.forEach(((n,r)=>{t.setUniform1i(n,r),e.bindTexture(a[r],r);})));}function G(e,t,n,a){if(null===a||null==n)return !1;const{info:r}=a;switch(r.type){case o$2.FLOAT:r.size>1?e.setUniform1fv(t,n):e.setUniform1f(t,n);break;case o$2.FLOAT_VEC2:e.setUniform2fv(t,n);break;case o$2.FLOAT_VEC3:e.setUniform3fv(t,n);break;case o$2.FLOAT_VEC4:e.setUniform4fv(t,n);break;case o$2.FLOAT_MAT3:e.setUniformMatrix3fv(t,n);break;case o$2.FLOAT_MAT4:e.setUniformMatrix4fv(t,n);break;case o$2.INT:r.size>1?e.setUniform1iv(t,n):e.setUniform1i(t,n);break;case o$2.BOOL:e.setUniform1i(t,n?1:0);break;case o$2.INT_VEC2:case o$2.BOOL_VEC2:e.setUniform2iv(t,n);break;case o$2.INT_VEC3:case o$2.BOOL_VEC3:e.setUniform3iv(t,n);break;case o$2.INT_VEC4:case o$2.BOOL_VEC4:e.setUniform4iv(t,n);break;default:return !1}return !0}
+
+/*
+All material copyright ESRI, All Rights Reserved, unless otherwise specified.
+See https://js.arcgis.com/4.24/esri/copyright.txt for details.
+*/
+const r={geometry:[new t$2("a_pos",2,C.BYTE,0,2)]},t={geometry:[new t$2("a_pos",2,C.BYTE,0,4),new t$2("a_tex",2,C.BYTE,2,4)]},m={geometry:[new t$2("a_pos",2,C.UNSIGNED_SHORT,0,4)]};
+
+export { A, E, F, O, R, T, U, _, r as a, t$1 as b, d, g, h, m, n, r$1 as r, t };

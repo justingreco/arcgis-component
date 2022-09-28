@@ -1,0 +1,70 @@
+<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <title>Stencil Component Starter</title> <script type="module" src="/build/arcgis-component.esm.js" data-stencil></script> <script nomodule="" src="/build/arcgis-component.js" data-stencil></script> <link rel="stylesheet" media="all" href="https://raleighnc.gov/sites/default/files/css/css_Amwz0N9meqQfWUu1eDuByFESscRwi0K0fkWv8xUfLiM.css"> <link rel="stylesheet" media="all" href="https://raleighnc.gov/sites/default/files/css/css_XNJ1vO7M_yjAKVYRso4FE8B4mBw6vTtY9yjXqwsK4Qo.css"> <link rel="stylesheet" media="all" href="https://raleighnc.gov/sites/default/files/css/css_YemhyUObwVk_tgb0Y3R5duui1Ku7mZrPgzfUQiUHOWc.css"> <link rel="stylesheet" media="all" href="https://raleighnc.gov/sites/default/files/css/css_TlWV0TsQOEBolm0KKy2TpnUf9bkSOcmHbIgOVqHWL9w.css"> <link rel="stylesheet" media="all" href="https://raleighnc.gov/sites/default/files/css/css_g0z50VyI5lX-IM3YN8SHqw9xD85qx1u8NIBIYmQwRGI.css"> <link rel="stylesheet" media="all" href="//fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&amp;display=swap"> <link rel="stylesheet" media="all" href="//fast.fonts.net/t/1.css?apiType=css&amp;projectid=09a27af5-492a-4d81-8d5f-487f867ffe85"> <link rel="stylesheet" media="print" href="https://raleighnc.gov/sites/default/files/css/css_PEXN1IoXw1lbfEdcn4Tn2nSORQaXYfDA98DQSO6fYzA.css"> <style>body {
+        margin: 1em;
+        padding-top: 0 !important;
+      }</style> <script type="module" src="https://js.arcgis.com/calcite-components/1.0.0-beta.94/calcite.esm.js"></script> <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.0.0-beta.94/calcite.css"> <script>
+      function loaded() {
+        document.querySelector('calcite-select').addEventListener('calciteSelectChange', (e) => {
+        console.log(e.target.selectedOption.value);
+        document.querySelectorAll('.component').forEach(component => {
+          component.setAttribute('hidden','');
+        });
+        document.getElementById(e.target.selectedOption.value).removeAttribute('hidden');
+      });
+
+      }
+      function update() {
+        const mapId = document.getElementById('mapId').value;
+        const address = document.getElementById('address').value;
+        const height = document.getElementById('mapHeight').value;
+        const width = document.getElementById('mapWidth').value;
+        const zoom = document.getElementById('zoom').value;
+        const layerlist = document.getElementById('layerlist').checked;
+        const legend = document.getElementById('legend').checked;
+        const search = document.getElementById('searchSwitch').checked;
+        const navigate = document.getElementById('navigate').checked;
+
+        var container = document.getElementById('webMap');
+        var webMap = container.querySelector('web-map');
+        var newMap = document.createElement('web-map');
+        if (mapId.length) {
+          newMap.setAttribute('map-id', mapId);
+        }
+        if (zoom.length) {
+          newMap.setAttribute('zoom', zoom);
+        }        
+        if (address.length) {
+          newMap.setAttribute('address', address);
+        }
+        if (search) {
+          newMap.setAttribute('search', '');
+        }         
+        if (legend) {
+          newMap.setAttribute('legend', '');
+        }       
+        if (layerlist) {
+          newMap.setAttribute('layerlist', '');
+        }      
+        debugger
+        if (!navigate) {
+          newMap.setAttribute('navigate', 'false');
+        }    
+        newMap.setAttribute('width', width);    
+        newMap.setAttribute('height', height);                      
+
+        webMap.remove();
+        newMap.setAttribute('map-id', mapId);
+        container.prepend(newMap);
+        document.querySelector('code').innerHTML = `${newMap.outerHTML.replace('<','&lt;').replace('>', '&gt;').replaceAll('=""','')}`;
+        
+      }
+
+    </script> </head> <body onload="loaded()"> <calcite-select> <calcite-option value="webMap">Web Map</calcite-option> <calcite-option value="findMyService">Find My Service</calcite-option> <calcite-option value="waterUsage">Water Usage</calcite-option> </calcite-select> <p></p> <div id="webMap" class="component"> <web-map map-id="74fd0c8f4f044511b3542a268a6b008a" width="100%" height="300px"></web-map> <p><code>&lt;web-map map-id="74fd0c8f4f044511b3542a268a6b008a" zoom="15" address="222 W Hargett St, Raleigh, NC" legend layerlist width="100%" height="300px"&gt;&lt;/web-map&gt;</code></p> <calcite-label>map-id<calcite-input id="mapId" value="74fd0c8f4f044511b3542a268a6b008a"></calcite-input></calcite-label> <a href="https://ral.maps.arcgis.com/home/content.html?view=grid&amp;sortOrder=desc&amp;sortField=modified&amp;focus=maps-webmaps&amp;access=public#organization" target="_blank">Find Web Map</a> <br> <calcite-label>address<calcite-input id="address" value="" placeholder="222 W Hargett St, Raleigh, NC"></calcite-input> </calcite-label> <calcite-label>zoom<calcite-input id="zoom" value="" type="number" placeholder="0-20"></calcite-input> </calcite-label> <calcite-label>height<calcite-input id="mapHeight" value="300px"></calcite-input> </calcite-label> <calcite-label>width<calcite-input id="mapWidth" value="100%"></calcite-input> </calcite-label> <calcite-label>layerlist<calcite-switch id="layerlist"></calcite-switch> </calcite-label> <calcite-label>legend<calcite-switch id="legend"></calcite-switch> </calcite-label> <calcite-label>search<calcite-switch id="searchSwitch"></calcite-switch> </calcite-label> <calcite-label>navigate<calcite-switch id="navigate" checked=""></calcite-switch> </calcite-label> <calcite-button onclick="update()">Update</calcite-button> </div> <div id="findMyService" hidden="" class="component"> <find-my-service group-id="a8acaca3d4514d40bc7f302a8db291fb"></find-my-service> </div> <div id="waterUsage" hidden="" class="component"> <water-usage></water-usage> </div> <!--  scene-id="037cceb0e24440179dbd00846d2a8c4f"--> <script>
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  // auto-unregister service worker during dev mode
+  navigator.serviceWorker.getRegistration().then(function(registration) {
+  if (registration) {
+    registration.unregister().then(function() { location.reload(true) });
+  }
+  });
+}
+</script></body></html>
